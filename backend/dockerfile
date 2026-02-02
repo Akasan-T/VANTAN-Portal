@@ -1,0 +1,39 @@
+FROM php:8.4
+
+# 作業ディレクトリ
+WORKDIR /var/www/html
+
+# 必要なパッケージをインストール
+RUN apt-get update && apt-get install -y \
+    git \
+    zip \
+    unzip \
+    curl \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        pdo_mysql \
+        mbstring \
+        zip \
+        exif \
+        pcntl \
+        gd \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Composer をインストール
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Laravel の権限対策
+RUN chown -R www-data:www-data /var/www
+
+# ポート（artisan serve 用）
+EXPOSE 8000
+
+# コンテナ起動時のコマンド
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
