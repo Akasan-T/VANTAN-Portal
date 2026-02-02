@@ -1,48 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
-  <title>QR Test</title>
+  <title>【出席登録】QR読み込み</title>
   <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
-  <h1>QR読み取りテスト</h1>
-  <div id="reader" style="width: 300px;"></div>
+  <h1>出席登録</h1>
+  <div id="reader" style="width: 500px;"></div>
+
+  <!-- 効果音ファイル -->
+  <audio id="beep-sound" src="beep.mp3" preload="auto"></audio>
 
   <script>
-  function onScanSuccess(decodedText, decodedResult) {
-      console.log(`✅ QRコード読み取り成功: ${decodedText}`);
+    let lastScannedToken = null;
+    const beep = document.getElementById("beep-sound");
+
+    function onScanSuccess(decodedText, decodedResult) {
+      if (decodedText === lastScannedToken) return;
+      lastScannedToken = decodedText;
+
+      console.log(`読み取り成功: ${decodedText}`);
+
+      // 音を鳴らす（エラーキャッチあり）
+      beep.play().catch(err => {
+        console.warn("音が鳴らせませんでした:", err);
+      });
+
+      // API送信
       setTimeout(() => {
-          // ここでLaravelのエンドポイントにPOSTリクエストを送ることも可能
-          // 例: fetch('/camera/upload', { method: 'POST', body: JSON.stringify({ text: decodedText }) });
-      alert("読み込み成功: " + decodedText);
-      // ここでLaravelのエンドポイントに送信もOK
-    }, 50);
-  }
+        fetch("http://localhost:8000/api/scan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: decodedText })
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert("✅ ポイント付与完了！\n" + JSON.stringify(data, null, 2));
+          document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          console.error("送信エラー:", err);
+          alert("来店登録完了しました");
+          document.getElementById("result").innerText = "エラー: " + err;
+        });
 
-  const html5QrCode = new Html5Qrcode("reader");
+        // 再スキャン許可
+        setTimeout(() => {
+          lastScannedToken = null;
+        }, 3000);
+      }, 100); // 音再生後に遅延
+    }
 
-  Html5Qrcode.getCameras().then(devices => {
+    const html5QrCode = new Html5Qrcode("reader");
+
+    Html5Qrcode.getCameras().then(devices => {
       if (devices && devices.length) {
-          const cameraId = devices[0].id;
-          html5QrCode.start(
-              cameraId,
-              {
-                  fps: 10,
-                  qrbox: {
-                      width: 250,
-                      height: 250
-                  },
-                  // ✅ ハイライト用オプション
-                  rememberLastUsedCamera: true,
-                  aspectRatio: 1.0,
-                  showTorchButtonIfSupported: true
-              },
-              onScanSuccess
-          );
+        const cameraId = devices[0].id;
+        html5QrCode.start(
+          cameraId,
+          {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            rememberLastUsedCamera: true,
+            aspectRatio: 1.0,
+            showTorchButtonIfSupported: true
+          },
+          onScanSuccess
+        );
       }
-  }).catch(err => {
-      console.error("カメラの取得エラー", err);
-  });
+    }).catch(err => {
+      console.error("カメラの取得エラー:", err);
+    });
+
+        fetch('/api/scan', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+    })
+    .then(response => response.json())  // ← ここで HTML が返るとエラー
+    .then(result => console.log(result))
+    .catch(error => console.error("送信エラー:", error));
 </script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 20px;
+    }
+    div#reader {
+        margin: 0 auto;
+        text-align: center;
+    }
+</style>
 </body>
 </html>

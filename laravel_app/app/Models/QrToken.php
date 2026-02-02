@@ -13,11 +13,5 @@ class QrToken extends Model
     {
         return $this->belongsTo(User::class);
     }
+};
 
-    Schema::create('qr_tokens', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('user_id')->constrained()->onDelete('cascade');
-    $table->uuid('token')->unique();
-    $table->timestamps();
-});
-}

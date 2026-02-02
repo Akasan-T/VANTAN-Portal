@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class CameraController extends Controller
 {
@@ -22,5 +23,11 @@ class CameraController extends Controller
         }
 
         return back()->with('error', 'アップロード失敗');
+    }
+
+    public function show($id)
+    {
+    $user = User::findOrFail($id);
+    return view('user.show', compact('user'));
     }
 }

@@ -12,12 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('qr_tokens', function (Blueprint $table) {
-        $table->id();
-        $table->uuid('token')->unique();       // QRに埋め込む用 (推測されにくいUUID)
-        $table->foreignId('user_id')           // 誰のQRか
-              ->constrained();
-        $table->timestamps();
-    });
+            $table->id();
+            $table->uuid('token')->unique();
+            $table->integer('point')->default(0);
+            $table->integer('level')->default(1);
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,5 +28,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('qr_tokens');
     }
-    
 };
