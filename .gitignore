@@ -32,3 +32,4 @@ mysql_data
 /backend/vendor
 /backend/node_modules
 /backend/.env
+/frontend/.vite
