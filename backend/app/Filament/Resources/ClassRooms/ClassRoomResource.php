@@ -20,6 +20,10 @@ class ClassRoomResource extends Resource
 {
     protected static ?string $model = ClassRoom::class;
 
+    protected static ?string $navigationLabel = '教室管理';
+    protected static ?string $modelLabel = '教室';
+    protected static ?string $pluralModelLabel = '教室';
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $recordTitleAttribute = 'PHP';
