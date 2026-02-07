@@ -20,7 +20,7 @@ class ClassRoomResource extends Resource
 {
     protected static ?string $model = ClassRoom::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $recordTitleAttribute = 'PHP';
 
@@ -56,3 +56,4 @@ class ClassRoomResource extends Resource
         ];
     }
 }
+
