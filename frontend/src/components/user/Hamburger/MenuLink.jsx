@@ -4,11 +4,11 @@ import styles from "./MenuLink.module.css";
 
 function MenuLink({ text, to, onClick }) {
     return (
-        <li className={styles.item}>
-            <Link to={to} onClick={onClick}>
-                {text}
-            </Link>
-        </li>
+        <Link to={to} onClick={onClick}>
+            <li className={styles.item}>
+                    {text}
+            </li>
+        </Link>
     );
 }
 
