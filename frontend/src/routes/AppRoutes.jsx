@@ -14,9 +14,10 @@ function AppRoutes() {
             {/* ログイン */}
             {/* User Teacher Admin共通 */}
             <Route path="/login" element={<Login/>}/>
+
             {/* User */}
             <Route element={<UserLayout/>}>
-            
+                <Route path="/top" element={<Top/>}/>
             </Route>
 
             {/* Teacher */}
