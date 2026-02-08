@@ -13,7 +13,8 @@ class ListClassRooms extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->label('教室を登録'),
         ];
     }
 }

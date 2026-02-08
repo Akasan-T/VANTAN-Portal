@@ -10,10 +10,16 @@ class EditTeacher extends EditRecord
 {
     protected static string $resource = TeacherResource::class;
 
-    protected function getHeaderActions(): array
+    protected function mutateFormDataBeforeSave(array $data): array
     {
+        $this->record->user->update([
+            'name' => $data['user']['name'],
+            'email' => $data['user']['email'],
+            'is_active' => $data['user']['is_active'],
+        ]);
+
         return [
-            DeleteAction::make(),
+            'specialty' => $data['specialty'] ?? null,
         ];
     }
 }

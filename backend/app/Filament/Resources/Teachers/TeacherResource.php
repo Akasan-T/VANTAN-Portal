@@ -3,20 +3,19 @@
 namespace App\Filament\Resources\Teachers;
 
 use App\Models\Teacher;
+use App\Models\User;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Forms;
 use Illuminate\Support\Facades\Hash;
-
-// ★ ここ重要（修正点）
 use App\Filament\Resources\Teachers\Pages;
+use Filament\Support\Icons\Heroicon;
 
 class TeacherResource extends Resource
 {
     protected static ?string $model = Teacher::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-academic-cap';
-
+    protected static \BackedEnum|string|null $navigationIcon = Heroicon::AcademicCap;
     protected static ?string $navigationLabel = '講師管理';
     protected static ?string $modelLabel = '講師';
     protected static ?string $pluralModelLabel = '講師';
@@ -24,31 +23,33 @@ class TeacherResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->schema([
-            Forms\Components\TextInput::make('name')
+
+            /* ===== User 情報 ===== */
+
+            Forms\Components\TextInput::make('user.name')
                 ->label('名前')
                 ->required(),
 
-            Forms\Components\TextInput::make('email')
+            Forms\Components\TextInput::make('user.email')
                 ->label('メールアドレス')
                 ->email()
-                ->required()
-                ->unique(ignoreRecord: true),
-
-            Forms\Components\TextInput::make('subject')
-                ->label('担当科目'),
+                ->required(),
 
             Forms\Components\TextInput::make('password')
-                ->label('パスワード')
+                ->label('初期パスワード')
                 ->password()
                 ->required(fn ($record) => $record === null)
-                ->dehydrateStateUsing(
-                    fn ($state) => filled($state) ? Hash::make($state) : null
-                )
-                ->dehydrated(fn ($state) => filled($state)),
+                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                ->dehydrated(false), // Teacherには保存しない
 
-            Forms\Components\Toggle::make('is_active')
+            Forms\Components\Toggle::make('user.is_active')
                 ->label('在籍中')
                 ->default(true),
+
+            /* ===== Teacher 情報 ===== */
+
+            Forms\Components\TextInput::make('specialty')
+                ->label('担当科目'),
         ]);
     }
 

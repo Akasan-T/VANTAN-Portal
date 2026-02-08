@@ -14,31 +14,41 @@ class TeachersTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('user.name')
+                    ->label('氏名')
                     ->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
+
+                TextColumn::make('user.email')
+                    ->label('メールアドレス')
                     ->searchable(),
+
                 TextColumn::make('specialty')
+                    ->label('専門分野')
                     ->searchable(),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('登録日')
+                    ->dateTime('Y/m/d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('更新日')
+                    ->dateTime('Y/m/d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // 今はなしでOK
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('編集'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->label('選択した講師を削除'),
                 ]),
             ]);
     }
