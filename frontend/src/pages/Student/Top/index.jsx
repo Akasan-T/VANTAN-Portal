@@ -1,10 +1,11 @@
 // バンタンポータル総合サイト
 // 出勤中のスタッフのリストと公欠申請状態のリストを表示
+import Title from "../../../components/user/PageTitle/Title";
 
 function Top() {
     return (
         <>
-            <p>ホーム画面</p>
+            <Title title="ようこそ！〇〇 〇〇〇さん"/>
         </>
     );
 }

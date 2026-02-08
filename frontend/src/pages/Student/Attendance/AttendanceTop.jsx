@@ -1,9 +1,10 @@
 // 出席確認アプリのトップページ
+import Title from "../../../components/user/PageTitle/Title";
 
 function AttendanceTop() {
     return (
         <>
-            <p>出席確認</p>
+            <Title title="出席確認"/>
         </>
     );
 }
