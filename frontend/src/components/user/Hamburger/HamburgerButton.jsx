@@ -4,11 +4,13 @@ import styles from "./HamburgerButton.module.css";
 function HamburgerButton ({ isOpen, onClick }) {
     return (
         <button
+            className={`${styles.button} ${isOpen ? styles.open : ""}`}
             onClick={onClick}
-            style={styles.button}
             aria-label="menu"
         >
-            {isOpen ? "✕" : "☰"}
+            <span/>
+            <span/>
+            <span/>
         </button>
     );
 }

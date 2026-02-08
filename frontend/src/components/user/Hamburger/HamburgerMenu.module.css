@@ -1,1 +1,14 @@
 /* ハンバーガーメニュースタイル */
+.overlay {
+    position: fixed;
+    top: 96px;
+    right: 0px;
+    max-width: 293px;
+    height: 100vh;
+}
+
+.menu {
+    background: #E60012;
+    width: 293px;
+    height: 100%;
+}

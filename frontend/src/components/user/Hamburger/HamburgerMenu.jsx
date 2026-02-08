@@ -1,20 +1,20 @@
 // 開いた時のメニューリスト
 import styles from "./HamburgerMenu.module.css";
 
-function HamburgerMenu({ isOpen, onClose }) {
+function HamburgerMenu({ isOpen }) {
     if (!isOpen) return null;
 
     return (
-        <div
-            style={styles.overlay}
-            onClick={onClose}
-        >
-            <div
-                
+        <div className={styles.overlay}>
+            <nav 
+                className={styles.menu}
             >
-
-            </div>
-
+                <ul className={styles.list}>
+                    <li>ホーム</li>
+                </ul>
+            </nav>
         </div>
-    )
+    );
 }
+
+export default HamburgerMenu;

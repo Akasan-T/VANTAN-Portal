@@ -1,1 +1,32 @@
 /* ハンバーガーボタンスタイル */
+.button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border: none;
+    width: 50px;
+    height: 50px;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.button span {
+    width: 32px;
+    height: 1px;
+    background: #E60021;
+    display: block;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+/* 開いた時 × に */
+.open span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+}
+.open span:nth-child(2) {
+    opacity: 0;
+}
+.open span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+}
