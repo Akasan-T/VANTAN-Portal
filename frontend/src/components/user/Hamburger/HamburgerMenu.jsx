@@ -1,5 +1,6 @@
 // 開いた時のメニューリスト
 import styles from "./HamburgerMenu.module.css";
+import MenuList from "./MenuList";
 
 function HamburgerMenu({ isOpen }) {
     if (!isOpen) return null;
@@ -9,9 +10,7 @@ function HamburgerMenu({ isOpen }) {
             <nav 
                 className={styles.menu}
             >
-                <ul className={styles.list}>
-                    <li>ホーム</li>
-                </ul>
+                <MenuList/>
             </nav>
         </div>
     );

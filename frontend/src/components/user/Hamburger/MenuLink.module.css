@@ -1,0 +1,10 @@
+/* メニューリンクスタイル */
+
+.item {
+    border-bottom: 1px solid #fff;
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    letter-spacing: 2px;
+    padding: 4px 0;
+}

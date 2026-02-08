@@ -1,13 +1,18 @@
 // タイトルのみとハンバーガーメニュー付きを作成
 import styles from "./Header.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import HamburgerButton from "../Hamburger/HamburgerButton";
 import HamburgerMenu from "../Hamburger/HamburgerMenu";
 
-function Header({
-    showMenu = false,
-}) {
+function Header({ showMenu = false }) {
     const [isOpen, setIsOpen] = useState(false);
+    const location = useLocation();
+
+    // ページ移動時メニューを閉じる
+    useEffect(() => {
+        setIsOpen(false);
+    }, [location.pathname]);
 
     return (
         <>
