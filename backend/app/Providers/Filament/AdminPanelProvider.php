@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandName('VANTAN Portal staff')         
             ->login()
             ->colors([
                 'primary' => Color::Amber,
