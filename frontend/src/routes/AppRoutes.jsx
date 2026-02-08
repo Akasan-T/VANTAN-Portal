@@ -1,12 +1,13 @@
 import { Routes , Route } from "react-router-dom";
 
 // layouts
-import UserLayout from "../layouts/UserLayout";
+import StudentLayout from "../layouts/StudentLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import TeacherLayout from "../layouts/TeacherLayout";
 
 // pages
 import Login from "../pages/Auth/Login";
+import Top from "../pages/Student/Top";
 
 function AppRoutes() {
     return (
@@ -15,9 +16,9 @@ function AppRoutes() {
             {/* User Teacher Admin共通 */}
             <Route path="/login" element={<Login/>}/>
 
-            {/* User */}
-            <Route element={<UserLayout/>}>
-                <Route path="/top" element={<Top/>}/>
+            {/* Student */}
+            <Route path="/student" element={<StudentLayout/>}>
+                <Route path="top" element={<Top />}/>
             </Route>
 
             {/* Teacher */}
