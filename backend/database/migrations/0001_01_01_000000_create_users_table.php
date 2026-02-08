@@ -15,9 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable(); // メール認証完了日時
             $table->string('password');
-            $table->rememberToken();
+            $table->enum('role', [
+                            'student', // 生徒
+                            'teacher', // 教師
+                            'staff'    // スタッフ
+                        ]); // ユーザー種別
+            $table->rememberToken(); // ログイン状態保持用トークン
+            $table->softDeletes();   // 論理削除（復元可能）
             $table->timestamps();
         });
 

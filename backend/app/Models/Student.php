@@ -5,12 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Teacher extends Model
+class Student extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'specialty',
+        'student_number',
+        'faculty',
+        'department',
+        'major',
+        'grade',
+        'enrollment_year',
+        'status'
     ];
 
     public function user()
@@ -18,8 +24,8 @@ class Teacher extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function classes()
+    public function attendances()
     {
-        return $this->hasMany(ClassRoom::class, 'teacher_id');
+        return $this->hasMany(Attendance::class);
     }
 }

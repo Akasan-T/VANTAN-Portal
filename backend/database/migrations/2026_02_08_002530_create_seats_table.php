@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teachers', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->nullable();
-            $table->string('specialty')->nullable();
+        Schema::create('seats', function (Blueprint $table) {
+            $table->id(); // 座席ID
+            $table->string('room_name'); // 教室名
+            $table->string('seat_code'); // 座席番号
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teachers');
+        Schema::dropIfExists('seats');
     }
 };
