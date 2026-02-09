@@ -16,7 +16,8 @@ function Header({ showMenu = false }) {
 
     return (
         <>
-            <header className={styles.header}>
+            <header 
+                className={styles.header}>
                 <h1 className={styles.title}>
                     VANTAN<br/>POTAL
                 </h1>

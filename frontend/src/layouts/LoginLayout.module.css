@@ -1,4 +1,4 @@
-/* 生徒側ページ共通レイアウトスタイル */
+/* ログイン側共通レイアウト */
 .layout {
     min-height: 100vh;
     background: var(--white);
