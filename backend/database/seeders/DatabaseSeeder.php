@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        $this->call(UserSeeder::class);
+        
         User::create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',

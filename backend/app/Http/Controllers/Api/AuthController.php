@@ -5,35 +5,39 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        // 仮:後でSanctum認証に差し替え
-        $user = User::where('email ', 'admin@example.com')->first();
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        if (!$user) {
-            return response()->json(['message' => 'ユーザーが見つかりません'], 404);
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => '認証失敗'], 401);
         }
 
+        // 仮トークン（Sanctum前）
+        $token = base64_encode(str()->random(40));
+
         return response()->json([
-            'token' => 'dummy-token',
+            'token' => $token,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'role' => $user->role,
             ],
         ]);
     }
 
-    public function me()
+    public function me(Request $request)
     {
-        // 仮:後で差し替え
-        return response()->json([
-            'id' => 1,
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-        ]);
+        return response()->json($request->user());
     }
 }
