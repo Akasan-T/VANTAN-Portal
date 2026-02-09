@@ -11,3 +11,11 @@
     height: 100vh;
     padding: 40px 12px;
 }
+
+h1,
+h2,
+h3,
+p,
+li {
+    letter-spacing: 2px;
+}
