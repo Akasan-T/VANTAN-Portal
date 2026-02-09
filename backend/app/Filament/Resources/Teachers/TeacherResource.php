@@ -3,11 +3,9 @@
 namespace App\Filament\Resources\Teachers;
 
 use App\Models\Teacher;
-use App\Models\User;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Forms;
-use Illuminate\Support\Facades\Hash;
 use App\Filament\Resources\Teachers\Pages;
 use Filament\Support\Icons\Heroicon;
 
@@ -33,14 +31,17 @@ class TeacherResource extends Resource
             Forms\Components\TextInput::make('user.email')
                 ->label('メールアドレス')
                 ->email()
-                ->required(),
+                ->required()
+                ->unique(
+                    table: 'users',
+                    column: 'email',
+                    ignorable: fn ($record) => $record?->user
+                ),
 
-            Forms\Components\TextInput::make('password')
+            Forms\Components\TextInput::make('user.password')
                 ->label('初期パスワード')
                 ->password()
-                ->required(fn ($record) => $record === null)
-                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                ->dehydrated(false), // Teacherには保存しない
+                ->required(fn ($record) => $record === null),
 
             Forms\Components\Toggle::make('user.is_active')
                 ->label('在籍中')

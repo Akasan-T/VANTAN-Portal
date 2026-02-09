@@ -17,7 +17,7 @@ class CreateTeacher extends CreateRecord
         $user = User::create([
             'name'      => $data['user']['name'],
             'email'     => $data['user']['email'],
-            'password'  => Hash::make($data['password']),
+            'password'  => Hash::make($data['user']['password']),
             'role'      => 'teacher',
             'is_active' => $data['user']['is_active'] ?? true,
         ]);
