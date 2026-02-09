@@ -22,32 +22,19 @@ class TeacherResource extends Resource
     {
         return $schema->schema([
 
-            /* ===== User 情報 ===== */
-
-            Forms\Components\TextInput::make('user.name')
+            Forms\Components\TextInput::make('name')
                 ->label('名前')
                 ->required(),
 
-            Forms\Components\TextInput::make('user.email')
+            Forms\Components\TextInput::make('email')
                 ->label('メールアドレス')
                 ->email()
-                ->required()
-                ->unique(
-                    table: 'users',
-                    column: 'email',
-                    ignorable: fn ($record) => $record?->user
-                ),
+                ->required(),
 
-            Forms\Components\TextInput::make('user.password')
+            Forms\Components\TextInput::make('password')
                 ->label('初期パスワード')
                 ->password()
-                ->required(fn ($record) => $record === null),
-
-            Forms\Components\Toggle::make('user.is_active')
-                ->label('在籍中')
-                ->default(true),
-
-            /* ===== Teacher 情報 ===== */
+                ->required(),
 
             Forms\Components\TextInput::make('specialty')
                 ->label('担当科目'),

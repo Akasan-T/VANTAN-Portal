@@ -2,24 +2,31 @@
 
 namespace App\Filament\Resources\Teachers\Pages;
 
-use App\Filament\Resources\Teachers\TeacherResource;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditTeacher extends EditRecord
 {
-    protected static string $resource = TeacherResource::class;
+    protected static string $resource = \App\Filament\Resources\Teachers\TeacherResource::class;
 
-    protected function mutateFormDataBeforeSave(array $data): array
+    protected function mutateFormDataBeforeFill(array $data): array
     {
-        $this->record->user->update([
-            'name' => $data['user']['name'],
-            'email' => $data['user']['email'],
-            'is_active' => $data['user']['is_active'],
+        $data['name']  = $this->record->user->name;
+        $data['email'] = $this->record->user->email;
+
+        return $data;
+    }
+
+    protected function handleRecordUpdate($record, array $data): \Illuminate\Database\Eloquent\Model
+    {
+        $record->user->update([
+            'name'  => $data['name'],
+            'email' => $data['email'],
         ]);
 
-        return [
-            'specialty' => $data['specialty'] ?? null,
-        ];
+        $record->update([
+            'specialty' => $data['specialty'],
+        ]);
+
+        return $record;
     }
 }
