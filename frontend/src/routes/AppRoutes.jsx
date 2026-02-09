@@ -2,7 +2,6 @@ import { Routes , Route } from "react-router-dom";
 
 // layouts
 import StudentLayout from "../layouts/StudentLayout";
-import AdminLayout from "../layouts/AdminLayout";
 import TeacherLayout from "../layouts/TeacherLayout";
 
 // pages
@@ -30,12 +29,6 @@ function AppRoutes() {
             {/* Teacher */}
             {/* 教師ページパスはここ */}
             <Route path="/teacher" element={<TeacherLayout/>}>
-            
-            </Route>
-            
-            {/* Admin */}
-            {/* 管理者ページパスはここ */}
-            <Route path="/admin" element={<AdminLayout/>}>
             
             </Route>
         </Routes>
