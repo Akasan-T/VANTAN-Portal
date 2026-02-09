@@ -6,12 +6,10 @@ import { Outlet } from "react-router-dom";
 function StudentLayout() {
     return (
         <div className={styles.layout}>
-            <div className={styles.container}>
-                <Header showMenu={true}/>
-                <main className={styles.main}>
-                    <Outlet/>
-                </main>
-            </div>
+            <Header showMenu={true}/>
+            <main className={styles.main}>
+                <Outlet/>
+            </main>
         </div>
     )
 }

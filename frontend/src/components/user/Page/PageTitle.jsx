@@ -1,6 +1,6 @@
 // 各ページのタイトル
-import styles from "./Title.module.css";
-function Title({title}) {
+import styles from "./PageTitle.module.css";
+function PageTitle({title}) {
     return (
         <>
             <h2 className={styles.title}>{title}</h2>
@@ -8,4 +8,4 @@ function Title({title}) {
     )
 }
 
-export default Title;
+export default PageTitle;

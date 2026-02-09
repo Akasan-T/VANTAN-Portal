@@ -1,7 +1,7 @@
 /* ページタイトルレイアウト */
 .title {
     text-align: center;
-    color: #E60021;
+    color: var(--red);
     font-size: 24px;
     letter-spacing: 2px;
     line-height: 1.2;
