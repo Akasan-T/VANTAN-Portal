@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Class_schedule extends Model
+class ClassSchedule extends Model
 {
     protected $fillable = [
+        'class_id',
         'date',
         'start_time',
         'end_time',
@@ -17,7 +18,7 @@ class Class_schedule extends Model
 
     public function class()
     {
-        return $this->belongsTo(ClassRoom::class, 'class_id');
+        return $this->belongsTo(Classes::class, 'class_id');
     }
 
     public function attendances()
