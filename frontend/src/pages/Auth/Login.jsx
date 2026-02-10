@@ -2,13 +2,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "@/api/auth";
-import { useLogin } from "../../context/LoginContext";
+import { useLogin } from "@/context/LoginContext";
 import StudentLoginForm from "./StudentLoginForm";
 import TeacherLoginForm from "./TeacherLoginForm";
 
 function Login({ role }) {
     const navigate = useNavigate();
-    const { loginUser } = useLogin();
+    const { setUser } = useLogin();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -19,11 +19,11 @@ function Login({ role }) {
         try {
             const user = await login(email, password);
 
-            loginUser(user);
-            
             if (user.role !== role) {
                 throw new Error("役割の不一致")
             } 
+
+            setUser(user);
 
             if (role === "student") navigate("/student/top");
             if (role === "teacher") navigate("/teacher/top");

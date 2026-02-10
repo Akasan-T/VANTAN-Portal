@@ -26,6 +26,7 @@ function AppRoutes() {
                 <Route path="teacher" element={<Login role="teacher" />} />
             </Route>
 
+            {/* ページ */}
             {/* 生徒ページ */}
             <Route path="/student" element={<StudentLayout/>}>
                 <Route path="top" element={<Top/>}/>

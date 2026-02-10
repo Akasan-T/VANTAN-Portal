@@ -19,9 +19,24 @@ export const login = async (email, password) => {
     return data.user;
 };
 
+export const fetchMe = async () => {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_URL}/me`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!res.ok) {
+        throw new Error("未ログイン");
+    }
+
+    return await res.json();
+};
+
 export const getUser = () => {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
+    return JSON.parse(localStorage.getItem("user"));
 };
 
 export const isLoggedIn = () => {

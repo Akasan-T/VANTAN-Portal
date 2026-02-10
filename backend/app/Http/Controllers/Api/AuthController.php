@@ -22,8 +22,10 @@ class AuthController extends Controller
             return response()->json(['message' => '認証失敗'], 401);
         }
 
-        // 仮トークン（Sanctum前）
-        $token = base64_encode(str()->random(40));
+        $user->tokens()->delete();
+
+        
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'token' => $token,

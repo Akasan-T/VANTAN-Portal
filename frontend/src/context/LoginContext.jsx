@@ -1,30 +1,41 @@
 // src/context/LoginContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
-import { getUser } from "../api/auth";
+import { fetchMe } from "@/api/auth";
 
-// 1. Context作成
-const LoginContext = createContext(null);
+// Context作成
+const LoginContext = createContext();
 
-// 2. Providerを作る
+// Providerを作成
 export const LoginProvider = ({ children }) => {
     const [user, setUser] = useState(null); // nullなら未ログイン
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const savedUser = getUser();
-        if (savedUser) {
-            setUser(savedUser);
-        }
-    })
-    
-    const loginUser = (userData) => setUser(userData);  // ログイン時に user をセット
-    const logoutUser = () => setUser(null);            // ログアウト時に user をクリア
+        const init = async () => {
+            try {
+                const me = await fetchMe();
+                setUser(me);
+            } catch {
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+        init();
+    }, []);
 
     return (
-        <LoginContext.Provider value={{ user, loginUser, logoutUser }}>
+        <LoginContext.Provider value={{ user, setUser, loading }}>
             {children}
         </LoginContext.Provider>
     );
 };
 
-// 3. Contextを簡単に使えるカスタムフック
-export const useLogin = () => useContext(LoginContext);
+// Contextを簡単に使えるカスタムフック
+export const useLogin = () => {
+    const context = useContext(LoginContext);
+    if ( !context ) {
+        throw new Error("useLoginはLoginProvider内で使用する必要があります");
+    }
+    return context;
+};

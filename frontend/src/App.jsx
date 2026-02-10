@@ -1,14 +1,14 @@
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
-import { LoginProvider } from "./context/LoginContext";
+import { LoginProvider } from "@/context/LoginContext";
 
 function App() {
   return (
-    <BrowserRouter>
-      <LoginProvider>
-        <AppRoutes />
-      </LoginProvider>
-    </BrowserRouter>
+    <LoginProvider>
+      <BrowserRouter>
+          <AppRoutes />
+      </BrowserRouter>
+    </LoginProvider>
   );
 }
 
