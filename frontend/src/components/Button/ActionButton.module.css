@@ -1,6 +1,10 @@
 /* アクションボタンレイアウト */
 .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
+    max-width: 280px;
     border-radius: 10px;
     font-weight: 600;
     line-height: 40px;
@@ -34,6 +38,7 @@
 .lg {
     font-size: 20px;
     padding: 8px 16px;
+    gap: 8px;
 }
 
 .button:disabled {

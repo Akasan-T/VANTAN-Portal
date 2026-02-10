@@ -13,6 +13,7 @@ class Attendance extends Model
         'status',
         'attendance_method',
         'checked_in_at',
+        'seat_number',
     ];
 
     public function student()

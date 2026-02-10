@@ -13,6 +13,7 @@ class AttendanceController extends Controller
     {
         $request->validate([
             'code' => 'required|string',
+            'seat_id' => 'required|exists:seats,id',
         ]);
 
         $student = auth()->user()->student;
@@ -42,6 +43,7 @@ class AttendanceController extends Controller
         Attendance::create([
             'student_id' => $student->id,
             'class_schedule_id' => $schedule->id,
+            'seat_id' => $request->seat_id,
             'status' => 'present',
             'attendance_method' => 'qr',
             'checked_in_at' => now(),

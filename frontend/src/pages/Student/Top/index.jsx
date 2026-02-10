@@ -11,7 +11,7 @@ function Top() {
     return (
         
         <>
-            <PageTitle title={`ようこそ${user?.name}！さん`} role={user?.role || "student"}/>
+            <PageTitle title={`ようこそ！${user?.name}さん`} role={user?.role || "student"}/>
 
             <PageSection>
                 <PageSectionBox title="現在勤務中のスタッフ">

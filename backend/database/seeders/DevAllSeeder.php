@@ -9,6 +9,7 @@ use App\Models\Teacher;
 use App\Models\Student;
 use App\Models\Classes;
 use App\Models\ClassSchedule;
+use App\Models\Seat;
 use Carbon\Carbon;
 
 class DevAllSeeder extends Seeder
@@ -88,5 +89,18 @@ class DevAllSeeder extends Seeder
             'code_expires_at' => Carbon::now()->addMinutes(15),
             'status' => 'open',
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | 座席（seats）
+        |--------------------------------------------------------------------------
+        */
+        // 仮に教室Aに 10席作る
+        for ($i = 1; $i <= 10; $i++) {
+            Seat::create([
+                'room_name' => '教室A',
+                'seat_code' => 'A'.$i,
+            ]);
+        }
     }
 }

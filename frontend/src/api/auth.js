@@ -1,48 +1,16 @@
-const API_URL = "http://localhost:8000/api";
+// ログインAPI
+import API from "./client";
 
 export const login = async (email, password) => {
-    const res = await fetch(`${API_URL}/login`, {
-        method:'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-    });
-
-    if (!res.ok) {
-        throw new Error ("ログイン失敗");
-    }
-    
-    const data = await res.json();
-
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-
-    return data.user;
+    const res = await API.post("/login", { email, password });
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+    return res.data.user;
 };
 
 export const fetchMe = async () => {
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(`${API_URL}/me`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    if (!res.ok) {
-        throw new Error("未ログイン");
-    }
-
-    return await res.json();
+    const res = await API.get("/me");
+    return res.data;
 };
 
-export const getUser = () => {
-    return JSON.parse(localStorage.getItem("user"));
-};
-
-export const isLoggedIn = () => {
-    return !!localStorage.getItem("token");
-};
-
-export const logout = () => {
-    localStorage.clear();
-}
+export const logout = () => localStorage.clear();
