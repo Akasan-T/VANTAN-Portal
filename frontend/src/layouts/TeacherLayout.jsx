@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 function TeacherLayout() {
     return (
         <div className={styles.layout}>
-            <Header />
+            <Header role="teacher" showMenu={false}/>
             <main className={styles.main}>
                 <Outlet />
             </main>

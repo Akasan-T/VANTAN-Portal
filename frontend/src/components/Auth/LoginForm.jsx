@@ -2,7 +2,10 @@
 import styles from "./LoginForm.module.css";
 import ActionButton from "../Button/ActionButton";
 
-function LoginForm ({ onSubmit, loading, error}) {
+function LoginForm ({ onSubmit, loading, error, role}) {
+    const variant = role;
+    const inputClass = `${styles.input} ${styles[role]}`;
+
     return (
         <form 
             onSubmit={(e) => {
@@ -12,12 +15,13 @@ function LoginForm ({ onSubmit, loading, error}) {
                     e.target.password.value
                 );
             }}
-            className={styles.from}
+            className={styles.form}
         >
             <input 
                 name="email" 
                 placeholder="メールアドレス"
                 required
+                className={inputClass}
             />
 
             <input 
@@ -25,6 +29,7 @@ function LoginForm ({ onSubmit, loading, error}) {
                 name="password"
                 placeholder="パスワード"
                 required
+                className={inputClass}
             />
 
             {error && <p>{error}</p>}
@@ -32,7 +37,8 @@ function LoginForm ({ onSubmit, loading, error}) {
             <ActionButton
                 type="submit"
                 disabled={loading}
-                variant="primary"
+                variant={variant}
+                size="lg"
             >
                 {loading ? "ログイン中…" : "ログイン"}
             </ActionButton>

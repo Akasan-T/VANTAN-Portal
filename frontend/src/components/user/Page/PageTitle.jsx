@@ -1,9 +1,9 @@
 // 各ページのタイトル
 import styles from "./PageTitle.module.css";
-function PageTitle({title}) {
+function PageTitle({ title, role }) {
     return (
         <>
-            <h2 className={styles.title}>{title}</h2>
+            <h2 className={`${styles.title} ${styles[role]}`}>{title}</h2>
         </>
     )
 }

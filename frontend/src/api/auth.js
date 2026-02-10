@@ -20,11 +20,12 @@ export const login = async (email, password) => {
 };
 
 export const getUser = () => {
-    JSON.parse(localStorage.getItem("user"));
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
 };
 
 export const isLoggedIn = () => {
-    !!localStorage.getItem("token");
+    return !!localStorage.getItem("token");
 };
 
 export const logout = () => {

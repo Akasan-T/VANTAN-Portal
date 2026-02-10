@@ -1,12 +1,15 @@
 // 出席確認アプリのトップページ
+import { useLogin } from "../../../context/LoginContext";
 import PageTitle from "../../../components/user/Page/PageTitle";
 import PageSection from "../../../components/user/Page/PageSection";
 import PageSectionBox from "../../../components/user/Page/PageSectionBox";
 
 function AttendanceTop() {
+    const { user } = useLogin();
+    
     return (
         <>
-            <PageTitle title="出席確認"/>
+            <PageTitle title="出席確認" role={user?.role || "student"}/>
 
             <PageSection>
                 <PageSectionBox title="現在出席中">

@@ -7,13 +7,14 @@ function ActionButton({
     type = "button",
     disabled = false,
     variant = "primary",
+    size = "md",
 }) {
     return (
         <button
             type={type}
             onClick={onClick}
             disabled={disabled}
-            className={`${styles.button} ${styles[variant]}`}
+            className={`${styles.button} ${styles[variant]} ${styles[size]}`}
         >
             {children}
         </button>

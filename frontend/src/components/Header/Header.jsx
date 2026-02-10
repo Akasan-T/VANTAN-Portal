@@ -2,10 +2,10 @@
 import styles from "./Header.module.css";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import HamburgerButton from "../Hamburger/HamburgerButton";
-import HamburgerMenu from "../Hamburger/HamburgerMenu";
+import HamburgerButton from "../user/Hamburger/HamburgerButton";
+import HamburgerMenu from "../user/Hamburger/HamburgerMenu";
 
-function Header({ showMenu = false }) {
+function Header({ showMenu = false, role }) {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
 
@@ -17,7 +17,7 @@ function Header({ showMenu = false }) {
     return (
         <>
             <header 
-                className={styles.header}>
+                className={`${styles.header} ${role ? styles[role] : ""}`}>
                 <h1 className={styles.title}>
                     VANTAN<br/>POTAL
                 </h1>
