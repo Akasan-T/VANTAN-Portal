@@ -1,0 +1,23 @@
+/* 生徒側ページ共通レイアウトスタイル */
+.layout {
+    min-height: 100vh;
+    background: var(--white);
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 40px;
+    height: 100vh;
+    padding: 40px 12px;
+}
+
+h1,
+h2,
+h3,
+p,
+li,
+button{
+    letter-spacing: 2px;
+}

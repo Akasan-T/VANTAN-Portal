@@ -1,0 +1,24 @@
+:root {
+    /* カラー */
+    --white: #fafafa;
+    
+    /* 生徒側メインカラー */
+    --red: #e60021;
+
+    /* 教師側メインカラー（後で変更） */
+    --black: #000;
+
+    /* 出席状態 */
+    --green: #4caf50;
+    --yellow: #ffb300;
+    --blue: #1e88e5;
+    --gray: #9e9e9e;
+}
+
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+}
