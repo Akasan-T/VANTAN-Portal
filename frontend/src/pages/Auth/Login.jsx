@@ -16,38 +16,24 @@ function Login({ role }) {
 
         try {
             const user = await login(email, password);
-
             if (user.role !== role) {
                 throw new Error("役割の不一致")
             } 
-            if (user.role === "student") navigate("/student/top");
-            if (user.role === "teacher") navigate("/teacher");
-        } catch {
-            setError("ログインに失敗しました");
+
+            if (role === "student") navigate("/student/top");
+            if (role === "teacher") navigate("/teacher/top");
+        } catch (err) {
+            setError(err.message || "ログインに失敗しました");
         } finally {
             setLoading(false);
         }
     };
 
-    if (role === "student") {
-        return (
-            <StudentLoginForm
-                onSubmit={handleSubmit}
-                loading={loading}
-                error={error}
-            />
-        );
-    }
-
-    if (role === "teacher") {
-        return (
-            <TeacherLoginForm
-                onSubmit={handleSubmit}
-                loading={loading}
-                error={error}
-            />
-        );
-    }
+    return role === "student" ? (
+        <StudentLoginForm onSubmit={handleSubmit} loading={loading} error={error} />
+    ) : (
+        <TeacherLoginForm onSubmit={handleSubmit} loading={loading} error={error} />
+    );
 }
 
 export default Login;
