@@ -31,3 +31,5 @@ auth.json
 mysql_data
 /backend/vendor
 /frontend/.vite
+backend/.env.docker.example
+backend/.env.example
