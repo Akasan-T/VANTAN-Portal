@@ -18,7 +18,19 @@ class ClassRoomsTable
             ->emptyStateHeading('教室が登録されていません')
             ->emptyStateDescription('右上の「新規作成」から教室を追加できます。')
             ->columns([
-                //
+                TextColumn::make('class_name')
+                    ->label('クラス名')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('floor')
+                    ->label('フロア')
+                    ->sortable(),
+
+                TextColumn::make('capacity')
+                    ->label('最大座席数')
+                    ->suffix(' 席')
+                    ->sortable(),
             ])
             ->filters([
                 //

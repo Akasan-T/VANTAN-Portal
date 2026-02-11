@@ -10,6 +10,8 @@ class ClassRoom extends Model
 
     protected $fillable = [
         'class_name',
+        'floor',
+        'capacity',
         'department_name',
         'grade',
         'school_year',
@@ -25,4 +27,5 @@ class ClassRoom extends Model
     {
         return $this->hasMany(Class_schedule::class, 'class_id');
     }
+    
 }

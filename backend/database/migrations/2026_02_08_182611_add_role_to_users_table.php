@@ -11,21 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['student','teacher','staff'])
-                ->default('staff')
-                ->after('password');
-        });
+        // usersテーブルに 'role' カラムが存在しない場合のみ実行する
+        if (!Schema::hasColumn('users', 'role')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->enum('role', ['student','teacher','staff'])
+                    ->default('staff')
+                    ->after('password');
+            });
+        }
     }
 
     /**
      * Reverse the migrations.
      */
-
     public function down(): void 
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-        });
+        if (Schema::hasColumn('users', 'role')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('role');
+            });
+        }
     }
 };

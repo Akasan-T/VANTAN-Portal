@@ -7,36 +7,65 @@ use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Filament\Actions\Action; // 👈 追加
 
 class CreateTeacher extends CreateRecord
 {
     protected static string $resource = TeacherResource::class;
 
-    // app/Filament/Resources/Teachers/Pages/CreateTeacher.php
-
-protected function mutateFormDataBeforeCreate(array $data): array
-{
-    // 🔍 修正：ここで一度中身を止めて確認してください
-    // dd($data); 
-
-    // 1. パスワードの抽出
-    $password = $data['password'] ?? null;
-
-    if (!$password) {
-        // もし dd($data) で 'user' => ['password' => '...'] となっていたらこちら
-        $password = $data['user']['password'] ?? null;
+    /**
+     * ボタンの日本語化と制御
+     */
+    protected function getCreateFormAction(): Action
+    {
+        return parent::getCreateFormAction()
+            ->label('登録する');
     }
 
-    return DB::transaction(function () use ($data, $password) {
-        // 2. User 作成
-        $user = User::create([
-            'name'     => $data['user']['name'],
-            'email'    => $data['user']['email'],
-            'password' => Hash::make($password),
-            'role'     => 'teacher',
-        ]);
+    protected function getCreateAnotherFormAction(): Action
+    {
+        // 「登録して続けて作成」ボタンを非表示にする
+        return parent::getCreateAnotherFormAction()
+            ->hidden();
+    }
 
-        // 3. Teacherテーブルに保存するデータのみを返す
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->label('キャンセル');
+    }
+
+    /**
+     * 登録成功時の通知メッセージ
+     */
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return '講師を登録しました';
+    }
+
+    /**
+     * 登録後のリダイレクト先を一覧画面にする
+     */
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    /**
+     * 保存処理（既存のロジック）
+     */
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $password = $data['password'] ?? ($data['user']['password'] ?? null);
+
+        return DB::transaction(function () use ($data, $password) {
+            $user = User::create([
+                'name'     => $data['user']['name'],
+                'email'    => $data['user']['email'],
+                'password' => Hash::make($password),
+                'role'     => 'teacher',
+            ]);
+
             return [
                 'user_id'   => $user->id,
                 'specialty' => $data['specialty'] ?? null,
