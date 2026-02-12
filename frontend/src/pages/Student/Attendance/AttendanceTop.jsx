@@ -1,5 +1,6 @@
 // 出席確認アプリのトップページ
 import { useState } from "react";
+
 import { useLogin } from "../../../context/LoginContext";
 import PageTitle from "../../../components/user/Page/PageTitle";
 import PageSection from "../../../components/user/Page/PageSection";
@@ -14,7 +15,7 @@ function AttendanceTop() {
 
     const handleScan = (code) => {
         setIsModalOpen(false);
-        navigate(`/seat-selection/${code}`);
+        navigate(`/SeatSelection/${code}`);
     };
 
     return (
@@ -40,7 +41,9 @@ function AttendanceTop() {
 
                 <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                     <PageTitle title="QRコードを読み取ってください" role={user?.role || "student"}/>
-                    <QRScanner onScan={handleScan}/>
+                    <QRScanner onScan={(text) => {
+                        alert("読み取ったQR： " + text);
+                    }}/>
                 </Modal>
             </PageSection>
         </>

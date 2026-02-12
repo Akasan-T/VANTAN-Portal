@@ -1,66 +1,88 @@
 // QRコード読み取り
 import styles from "./QRScanner.module.css";
 import { useEffect, useRef, useState } from "react";
-import { BrowserMultiFormatReader } from "@zxing/browser";
+import { BrowserMultiFormatReader, BrowserCodeReader } from "@zxing/browser";
 
 function QRScanner({ onScan }) {
     const videoRef = useRef(null);
+    const codeReaderRef = useRef(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const codeReader = new BrowserMultiFormatReader();
-        let stopped = false;
+        codeReaderRef.current = codeReader;
+
+        let stopped = false
 
         const startScanner = async () => {
             try {
-                // null = デフォルトカメラ
+                //（staticメソッド）
+                const devices = await BrowserCodeReader.listVideoInputDevices();
+
+                if (!devices.length) {
+                    setError("カメラが見つかりません");
+                    return;
+                }
+
+                // 外付け優先
+                const externalCamera = devices.find((d) => 
+                    d.label.match(/usb|external|logitech/i)
+                );
+
+                const deviceId = externalCamera
+                    ? externalCamera.deviceId
+                    : devices[0].deviceId; // なければ最初のカメラ
+
                 await codeReader.decodeFromVideoDevice(
-                    null,
+                    deviceId,
                     videoRef.current,
-                    (result, err) => {
+                    (result) => {
                         if (stopped) return;
 
                         if (result) {
-                            stopped = true;
+                            stopped = true
                             onScan(result.getText());
-                            // カメラ停止
-                            if (videoRef.current?.srcObject) {
-                                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-                            }
+
+                            stopCamera();
                         }
 
-                        // NotFoundException は無視
+                        // NotFoundExceptionは無視（毎フレーム出るため）
                     }
                 );
-
-                // video.play() の Promise をキャッチして AbortError を無視
-                if (videoRef.current) {
-                    const playPromise = videoRef.current.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch((e) => {
-                        if (e.name !== "AbortError") console.error(e);
-                        });
-                    }
-                }
             } catch (err) {
-                setError(err.message);
+                console.error(err);
+                setError("カメラ起動に失敗しました");
+            }
+        };
+
+        const stopCamera = () => {
+            stopped = true;
+
+            if (videoRef.current?.srcObject) {
+                videoRef.current.srcObject
+                    .getTracks()
+                    .forEach((track) => track.stop());
+                
+                videoRef.current.srcObject = null
             }
         };
 
         startScanner();
 
         return () => {
-            stopped = true;
-            if (videoRef.current?.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-            }
+            stopCamera();
         };
     }, [onScan]);
 
     return (
-        <div className={styles.content}>
+        <div className={styles.wrapper}>
             {error && <p>{error}</p>}
-            <video ref={videoRef} styles={styles.video}></video>
+            <video ref={videoRef} className={styles.video}></video>
+
+            {/* ガイド枠 */}
+            <div className={styles.overlay}>
+                <div className={styles.frame} />
+            </div>
         </div>
     )
 }

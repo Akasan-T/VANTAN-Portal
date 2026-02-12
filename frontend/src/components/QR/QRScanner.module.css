@@ -1,4 +1,30 @@
 /* QRコード読み取りカメラレイアウト */
+.wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
 .video {
-    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.frame {
+    width: 50%;
+    height: 70%;
+    border: 3px solid var(--white);
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(250, 250, 250, 0.6);
+    position: relative;
 }
