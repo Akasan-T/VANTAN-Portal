@@ -47,8 +47,8 @@ class DevAllSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
         $studentUser = User::create([
-            'name' => 'テスト学生',
-            'email' => 'student@test.com',
+            'name' => 'テスト学生1',
+            'email' => 'student1@test.com',
             'password' => Hash::make('password'),
             'role' => 'student',
         ]);
@@ -56,6 +56,24 @@ class DevAllSeeder extends Seeder
         $student = Student::create([
             'user_id' => $studentUser->id,
             'student_number' => 'S0001',
+            'faculty' => '工学部',
+            'department' => '情報工学科',
+            'major' => 'ソフトウェア',
+            'grade' => 2,
+            'enrollment_year' => 2024,
+            'status' => 'enrolled',
+        ]);
+
+        $studentUser = User::create([
+            'name' => 'テスト学生2',
+            'email' => 'student2@test.com',
+            'password' => Hash::make('password'),
+            'role' => 'student',
+        ]);
+
+        $student = Student::create([
+            'user_id' => $studentUser->id,
+            'student_number' => 'S0002',
             'faculty' => '工学部',
             'department' => '情報工学科',
             'major' => 'ソフトウェア',

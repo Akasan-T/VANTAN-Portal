@@ -31,7 +31,7 @@ function AppRoutes() {
             <Route path="/student" element={<StudentLayout/>}>
                 <Route path="top" element={<Top/>}/>
                 <Route path="attendance" element={<AttendanceTop/>}/>
-                <Route path="attendance/seat" element={<SeatSelection/>}/>
+                <Route path="attendance/seat/:code" element={<SeatSelection/>}/>
             </Route>
 
             {/* 教師ページ */}

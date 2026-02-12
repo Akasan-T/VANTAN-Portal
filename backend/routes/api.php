@@ -23,6 +23,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('/student')->middleware('role:student')->group(function () {
         // QR出席
         Route::post('/attendance/check', [AttendanceController::class, 'check']);
+        Route::post('/attendance/store', [AttendanceController::class, 'store']);
+        Route::get('/today', [AttendanceController::class, 'today']);
     });
 
     // 教師(認証必須)
