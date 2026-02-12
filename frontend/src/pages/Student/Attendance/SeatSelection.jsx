@@ -1,75 +1,100 @@
-// 教室でQRコードを読み取った後に出る座席選択ページ
+// 座席選択ページ
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useLogin } from "../../../context/LoginContext";
 import PageTitle from "../../../components/user/Page/PageTitle";
 import PageSection from "../../../components/user/Page/PageSection";
 import PageSectionBox from "../../../components/user/Page/PageSectionBox";
+import SeatList from "../../../components/user/Seat/SeatList";
 import { getScheduleByCode, storeAttendance } from "@/api/attendance";
 
 function SeatSelection() {
     const { user } = useLogin();
     const { code } = useParams();
+    const navigate = useNavigate();
 
+    // 授業情報
     const [schedule, setSchedule] = useState(null);
+    
+    // 座席一覧
     const [seats, setSeats] = useState([]);
+
+    // 初期ロード状態管理
     const [loading, setLoading] = useState(true);
 
+    // 出席ボタン連打防止
+    const [submitting, setSubmitting] = useState(false);
+
+    // QRコードから授業情報取得
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await getScheduleByCode(code);
-                console.log("取得データ:", data);
+                
+                // 出席済み自動的にリダイレクト
+                if (data.already_attended) {
+                    navigate("/student/attendance", {
+                        state: { message: "既に出席済みです" }
+                    });
+                    return;
+                }
 
+                // 授業情報と座席情報をセット
                 setSchedule(data);
                 setSeats(data.seats || []);
+
             } catch (error) {
-                alert("授業情報の取得に失敗しました");
+                if (error.response) {
+                    // 期限切れ判定
+                    if (error.response?.data?.expired) {
+                        toast.error("QRコードの有効期限が切れました");
+
+                        navigate("/student/attendance", {
+                            state: { message: "再度QRコードを読み込んでください"}
+                        });
+
+                        return;
+                    }
+                    // 他のエラー
+                    toast.error(error.response.data?.message || "授業情報が取得できませんでした");
+                } else {
+                    // ネットワークエラーなど
+                    toast.error("授業情報の取得に失敗しました");
+                }
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [code]);
-
-    // seats更新確認用（デバッグ）
-    useEffect(() => {
-        console.log("seats更新:", seats);
-    }, [seats]);
-
+    }, [code, navigate]);
     
+    // 座席選択時の出席登録処理
     const handleAttendance = async (seatId) => {
-        console.log("クリック seatId:", seatId);
-        console.log("schedule:", schedule);
+
+        // 二重送信防止
+        if (submitting) return;
+        setSubmitting(true);
 
         try {
-            // schedule.id がない可能性に対応
-            const scheduleId = schedule?.id || schedule?.schedule_id;
+            const scheduleId = schedule?.schedule_id;
 
-            if (!scheduleId) {
-                alert("授業IDが取得できません");
+            // 出席登録API呼び出し
+            const data = await storeAttendance(scheduleId, seatId);
+
+            // サーバー側で出席済み
+            if (data?.already_attended) {
+                toast.error("既に出席済みです");
+                navigate("/student/attendance");
                 return;
             }
 
-            await storeAttendance(scheduleId, seatId);
+            toast.success("出席しました！");
+            navigate("/student/attendance");
 
-            // フィールド名ズレ対策（is_taken / taken 両対応）
-            setSeats((prev) =>
-                prev.map((seat) =>
-                    seat.id === seatId
-                        ? {
-                            ...seat,
-                            is_taken: true,
-                            taken: true,
-                        }
-                        : seat
-                )
-            );
-            alert("出席しました！");
         } catch (error) {
-            console.error(error);
-            alert("出席に失敗しました");
+            toast.error(error.message || "出席に失敗しました");
         }
     };
 
@@ -81,63 +106,14 @@ function SeatSelection() {
             <PageTitle 
                 title={`${schedule.class_name} (${schedule.room_name})`} 
                 role={user?.role || "student"}/>
-            <div>
-                <h1>授業コード: {code}</h1>
-            </div>
 
             <PageSection>
                 <PageSectionBox title="座席を選択">
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(5, 1fr)",
-                            gap: "12px",
-                        }}
-                    >
-                        {seats.map((seat) => {
-                            const isTaken =
-                                seat.is_taken ?? seat.taken ?? false;
-
-                            return (
-                                <div
-                                    key={seat.id}
-                                    style={{
-                                        border: "1px solid #ccc",
-                                        padding: "10px",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    <div>
-                                        {seat.seat_code ??
-                                            seat.number ??
-                                            seat.id}
-                                    </div>
-
-                                    <button
-                                        disabled={isTaken}
-                                        onClick={() =>
-                                            handleAttendance(seat.id)
-                                        }
-                                        style={{
-                                            marginTop: "5px",
-                                            width: "100%",
-                                            background: isTaken
-                                                ? "#ccc"
-                                                : "#4CAF50",
-                                            color: "#fff",
-                                            border: "none",
-                                            padding: "6px",
-                                            cursor: isTaken
-                                                ? "not-allowed"
-                                                : "pointer",
-                                        }}
-                                    >
-                                        {isTaken ? "×" : "出席"}
-                                    </button>
-                                </div>
-                            );
-                        })}
-                    </div>
+                    <SeatList
+                        seats={seats}
+                        submitting={submitting}
+                        onSelect={handleAttendance}
+                    />
                 </PageSectionBox>
             </PageSection>
         </>

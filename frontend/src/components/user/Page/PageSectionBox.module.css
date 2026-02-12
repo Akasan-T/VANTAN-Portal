@@ -10,11 +10,8 @@
     width: 100%;
 }
 
-.box div {
-    width: 100%;
-}
-
 .title {
+    width: 100%;
     background: var(--red);
     border-radius: 9px 9px 0 0;
     padding: 12px 0;

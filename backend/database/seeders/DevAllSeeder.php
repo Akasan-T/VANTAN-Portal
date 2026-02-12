@@ -56,9 +56,9 @@ class DevAllSeeder extends Seeder
         $student = Student::create([
             'user_id' => $studentUser->id,
             'student_number' => 'S0001',
-            'faculty' => '工学部',
-            'department' => '情報工学科',
-            'major' => 'ソフトウェア',
+            'faculty' => 'KADOKAWAドワンゴ情報工科学院',
+            'department' => '専門',
+            'major' => 'システムエンジニア',
             'grade' => 2,
             'enrollment_year' => 2024,
             'status' => 'enrolled',
@@ -74,9 +74,9 @@ class DevAllSeeder extends Seeder
         $student = Student::create([
             'user_id' => $studentUser->id,
             'student_number' => 'S0002',
-            'faculty' => '工学部',
-            'department' => '情報工学科',
-            'major' => 'ソフトウェア',
+            'faculty' => 'KADOKAWAドワンゴ情報工科学院',
+            'department' => '専門',
+            'major' => 'システムエンジニア',
             'grade' => 2,
             'enrollment_year' => 2024,
             'status' => 'enrolled',
@@ -88,9 +88,9 @@ class DevAllSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
         $room = Room::create([
-            'room_name' => '教室A',
-            'floor' => 3,
-            'capacity' => 10,
+            'room_name' => '402',
+            'floor' => 4,
+            'capacity' => 26,
         ]);
 
         /*
@@ -98,10 +98,10 @@ class DevAllSeeder extends Seeder
         | 座席
         |--------------------------------------------------------------------------
         */
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= $room->capacity; $i++) {
             Seat::create([
                 'room_id' => $room->id,
-                'seat_code' => 'A' . $i,
+                'seat_code' => $i,
             ]);
         }
 
@@ -112,8 +112,8 @@ class DevAllSeeder extends Seeder
         */
         $class = Classes::create([
             'teacher_id' => $teacher->id,
-            'class_name' => 'Webアプリ開発',
-            'department_name' => '情報工学科',
+            'class_name' => 'PHP',
+            'department_name' => '専門',
             'grade' => 2,
             'school_year' => 2025,
             'term' => 'first',
@@ -128,8 +128,8 @@ class DevAllSeeder extends Seeder
             'class_id' => $class->id,
             'room_id' => $room->id, // ← これが今回の重要ポイント
             'date' => Carbon::today(),
-            'start_time' => '09:00',
-            'end_time' => '10:30',
+            'start_time' => '09:30',
+            'end_time' => '13:30',
             'attendance_code' => 'TEST-QR-CODE',
             'code_expires_at' => Carbon::now()->addMinutes(15),
             'status' => 'open',
@@ -143,7 +143,7 @@ class DevAllSeeder extends Seeder
         Attendance::create([
             'student_id' => $student->id,
             'class_schedule_id' => $classSchedule->id,
-            'seat_id' => 1, // A1
+            'seat_id' => 1, 
             'status' => 'present',
             'attendance_method' => 'qr',
             'checked_in_at' => now(),

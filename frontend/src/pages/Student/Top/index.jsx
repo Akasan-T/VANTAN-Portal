@@ -15,10 +15,10 @@ function Top() {
 
             <PageSection>
                 <PageSectionBox title="現在勤務中のスタッフ">
-                    <p>あいうえお</p>
+                    <p>テスト</p>
                 </PageSectionBox>
                 <PageSectionBox title="公欠申請状況">
-                    <p>あいうえお</p>
+                    <p>テスト</p>
                 </PageSectionBox>
             </PageSection>
         </>

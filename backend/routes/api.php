@@ -24,7 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // QR出席
         Route::post('/attendance/check', [AttendanceController::class, 'check']);
         Route::post('/attendance/store', [AttendanceController::class, 'store']);
-        Route::get('/today', [AttendanceController::class, 'today']);
+        Route::get('/attendance/today', [AttendanceController::class, 'today']);
     });
 
     // 教師(認証必須)

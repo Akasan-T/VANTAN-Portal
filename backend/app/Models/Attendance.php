@@ -26,11 +26,11 @@ class Attendance extends Model
 
     public function schedule()
     {
-        return $this->belongsTo(ClassSchedule::class);
+        return $this->belongsTo(ClassSchedule::class, 'class_schedule_id');
     }
 
     public function seat()
     {
-        return $this->belongsTo(Seat::class);
+        return $this->belongsTo(Seat::class, 'seat_id');
     }
 }

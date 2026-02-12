@@ -1,0 +1,56 @@
+/* AttendanceItem.module.css */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.className {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.dateTime {
+    font-size: 14px;
+    color: #666;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+/* ステータスごとの色 */
+.present {
+    background-color: #4caf50;
+}
+
+.absent {
+    background-color: #f44336;
+}
+
+.late {
+    background-color: #ff9800;
+}
+
+.early_leave {
+    background-color: #f44336;
+}
+
+.excused {
+    background-color: #2196f3;
+}

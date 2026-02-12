@@ -5,32 +5,77 @@ namespace App\Http\Controllers\Api\Student;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\ClassSchedule;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 
+/**
+ *  学生用の出席API
+ *  check == QRコードチェック
+ *  store == 出席登録
+ *  today == 今日の出席状況取得
+ **/
 class AttendanceController extends Controller
 {
-    // QRチェック
+    // QRコードチェック処理
     public function check(Request $request)
     {
+        // バリデーション
         $request->validate([
             'code' => 'required|string',
         ]);
 
+        // 有効な授業を探す(QR一致・授業開講中・QR有効期限判定)
         $schedule = ClassSchedule::with(['class', 'room.seats'])
             ->where('attendance_code', $request->code)
             ->where('status', 'open')
             ->where('code_expires_at', '>=', now())
             ->first();
 
+        // コードは存在するけど有効期限切れ
+        $schedule = ClassSchedule::where('attendance_code', $request->code)
+            ->first();
+        
         if (!$schedule) {
             return response()->json([
-                'message' => '有効な授業が見つかりません'
+                'message' => '授業が存在しません'
             ], 404);
         }
 
+        // 授業状況 or 有効期限チェック
+        if ($schedule->status !== 'open') {
+            return response()->json([
+                'message' => 'この授業は受付終了しています',
+                'expired' => true
+            ], 400);
+        }
+
+        if ($schedule->code_expires_at < now()) {
+            return response()->json([
+                'message' => 'QRコードの有効期限が切れています',
+                'expired' => true
+            ], 400);
+        }
+
+        $student = auth()->user()->student;
+
+        // ログイン中のユーザーが該当する授業に出席しているかチェック
+        $already = Attendance::where('student_id', $student->id)
+            ->where('class_schedule_id', $schedule->id)
+            ->exists();
+
+        // 出席済みエラー
+        if ($already) {
+            return response()->json([
+                'already_attended' => true,
+                'message' => '既に出席済みです'
+            ]);
+        }
+
+        // 座席の使用状況取得
         $takenSeatIds = Attendance::where('class_schedule_id', $schedule->id)
             ->pluck('seat_id');
 
+        // 座席一覧を整形
         $seats = $schedule->room->seats->map(function ($seat) use ($takenSeatIds) {
             return [
                 'id' => $seat->id,
@@ -39,6 +84,7 @@ class AttendanceController extends Controller
             ];
         });
 
+        // レスポンス
         return response()->json([
             'schedule_id' => $schedule->id,
             'class_name' => $schedule->class->class_name,
@@ -50,9 +96,10 @@ class AttendanceController extends Controller
         ]);
     }
 
-    // 出席者チェック
+    // 出席登録処理
     public function store(Request $request)
     {
+        // バリデーション
         $request->validate([
             'schedule_id' => 'required|exists:class_schedules,id',
             'seat_id' => 'required|exists:seats,id',
@@ -60,6 +107,19 @@ class AttendanceController extends Controller
 
         $student = auth()->user()->student;
 
+        // 出席済みチェック
+        $exists = Attendance::where('student_id', $student->id)
+            ->where('class_schedule_id', $request->schedule_id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'already_attended' => true,
+                'message' => '既に出席済みです'
+            ], 200);
+        }
+
+        // 出席登録
         Attendance::create([
             'student_id' => $student->id,
             'class_schedule_id' => $request->schedule_id,
@@ -69,16 +129,19 @@ class AttendanceController extends Controller
             'checked_in_at' => now(),
         ]);
 
+        // 成功時レスポンス
         return response()->json([
-            'message' => '出席を記録しました'
+            'success' => true
         ]);
     }
 
-    // 当日出席状況
+
+    // 当日の出席状況
     public function today()
     {
         $student = auth()->user()->student;
 
+        // 今日の授業のみ取得
         $attendances = Attendance::with(['schedule.class', 'schedule.room', 'seat'])
             ->where('student_id', $student->id)
             ->whereHas('schedule', function ($query) {
@@ -86,15 +149,21 @@ class AttendanceController extends Controller
             })
             ->get()
             ->map(function ($attendance) {
-                return [
-                    'class_name' => $attendance->schedule->class->class_name,
-                    'room_name' => $attendance->room->room_name,
-                    'seat_code' => $attendance->seat->seat_code,
-                    'date' => $attendance->schedule->date,
-                    'status' => $attendance->status,
-                ];
-            });
-        
+                $schedule = $attendance->schedule;
+
+                    // 時間を "13:00〜17:00" の形式に整形
+                    $timeRange = $schedule->start_time && $schedule->end_time
+                        ? date('H:i', strtotime($schedule->start_time)) . '〜' . date('H:i', strtotime($schedule->end_time))
+                        : '';
+
+                    return [
+                        'status' => $attendance->status, // 出席など
+                        'class_name' => $schedule->class->class_name, // 授業名
+                        'time' => $timeRange, // 授業時間
+                        'date' => date('Y/m/d', strtotime($schedule->date)), // 日付
+                    ];
+                });
+                
             return response()->json($attendances);
     }
 }
