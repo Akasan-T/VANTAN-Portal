@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('class_id') // classesに紐付け
                   ->constrained()
                   ->cascadeOnDelete();    // class_id削除時に同時削除
+            $table->foreignId('room_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
             $table->date('date');         // 授業日
             $table->time('start_time');   // 開始時刻
             $table->time('end_time');     // 終了時刻

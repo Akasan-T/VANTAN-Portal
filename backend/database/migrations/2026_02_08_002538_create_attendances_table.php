@@ -29,6 +29,7 @@ return new class extends Migration
             $table->enum('status', [
                 'present', // 出席
                 'late',    // 遅刻
+                'early_leave', // 早退
                 'absent',  // 欠席
                 'excused'  // 公欠
             ]);
@@ -41,6 +42,10 @@ return new class extends Migration
 
             $table->dateTime('checked_in_at')->nullable(); // 出席時刻
             $table->timestamps();
+
+            // 重複防止
+            $table->unique(['student_id', 'class_schedule_id']);
+            $table->unique(['class_schedule_id', 'seat_id']);
         });
     }
 

@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id(); // 座席ID
-            $table->string('room_name'); // 教室名
+            $table->foreignId('room_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
             $table->string('seat_code'); // 座席番号
             $table->timestamps();
+
+            $table->unique(['room_id', 'seat_code']); // 同じ教室で同じ席番号禁止
         });
     }
 

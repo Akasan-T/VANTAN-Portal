@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('classes', function (Blueprint $table) {
-            $table->foreignId('teacher_id')->nullable()->change();
+        Schema::create('rooms', function (Blueprint $table) {
+            $table->id();
+            $table->string('room_name');
+            $table->integer('floor');
+            $table->integer('capacity')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('classes', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('rooms');
     }
 };
