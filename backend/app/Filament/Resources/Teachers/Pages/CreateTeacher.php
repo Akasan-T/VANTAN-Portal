@@ -13,6 +13,11 @@ class CreateTeacher extends CreateRecord
 {
     protected static string $resource = TeacherResource::class;
 
+    public function getTitle(): string 
+    {
+        return '講師アカウントの作成';
+    }
+
     /**
      * ボタンの日本語化と制御
      */

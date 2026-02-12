@@ -23,7 +23,7 @@ class TeachersTable
                     ->searchable(),
 
                 TextColumn::make('specialty')
-                    ->label('専門分野')
+                    ->label('担当科目')
                     ->searchable(),
 
                 TextColumn::make('created_at')
