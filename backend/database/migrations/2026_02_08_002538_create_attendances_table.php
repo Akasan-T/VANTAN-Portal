@@ -27,10 +27,11 @@ return new class extends Migration
                   ->nullOnDelete();
                 
             $table->enum('status', [
-                'present', // 出席
-                'late',    // 遅刻
-                'absent',  // 欠席
-                'excused'  // 公欠
+                'present',     // 出席
+                'late',        // 遅刻
+                'early_leave', // 早退
+                'absent',      // 欠席
+                'excused'      // 公欠
             ]);
 
             $table->enum('attendance_method', [
@@ -41,6 +42,10 @@ return new class extends Migration
 
             $table->dateTime('checked_in_at')->nullable(); // 出席時刻
             $table->timestamps();
+
+            // 重複防止
+            $table->unique(['student_id', 'class_schedule_id']);
+            $table->unique(['class_schedule_id', 'seat_id']);
         });
     }
 

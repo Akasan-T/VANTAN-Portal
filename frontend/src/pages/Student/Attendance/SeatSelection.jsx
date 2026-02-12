@@ -1,0 +1,23 @@
+// 教室でQRコードを読み取った後に出る座席選択ページ
+import { useLogin } from "../../../context/LoginContext";
+import PageTitle from "../../../components/user/Page/PageTitle";
+import PageSection from "../../../components/user/Page/PageSection";
+import PageSectionBox from "../../../components/user/Page/PageSectionBox";
+
+function SeatSelection() {
+    const { user } = useLogin();
+    
+    return (
+        <>
+            <PageTitle title="チーム制作(402)" role={user?.role || "student"}/>
+
+            <PageSection>
+                <PageSectionBox title="座席を選択">
+                    <p>あいうえお</p>
+                </PageSectionBox>
+            </PageSection>
+        </>
+    );
+}
+
+export default SeatSelection;

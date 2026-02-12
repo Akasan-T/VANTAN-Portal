@@ -7,11 +7,12 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use Notifiable;
     use SoftDeletes; // 論理的削除（復元可能）
+    use HasApiTokens, Notifiable;
 
     protected $fillable = [
         'name',

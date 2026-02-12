@@ -9,7 +9,7 @@ use App\Filament\Resources\ClassRooms\Pages\ViewClassRoom;
 use App\Filament\Resources\ClassRooms\Schemas\ClassRoomForm;
 use App\Filament\Resources\ClassRooms\Schemas\ClassRoomInfolist;
 use App\Filament\Resources\ClassRooms\Tables\ClassRoomsTable;
-use App\Models\ClassRoom;
+use App\Models\Classes;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -18,7 +18,7 @@ use Filament\Tables\Table;
 
 class ClassRoomResource extends Resource
 {
-    protected static ?string $model = ClassRoom::class;
+    protected static ?string $model = Classes::class;
 
     protected static ?string $navigationLabel = '教室管理';
     protected static ?string $modelLabel = '教室';
