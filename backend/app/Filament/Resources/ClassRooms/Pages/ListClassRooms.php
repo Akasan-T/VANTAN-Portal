@@ -21,6 +21,6 @@ class ListClassRooms extends ListRecords
 
     public function getTitle(): string 
     {
-        return '授業一覧';
+        return '授業管理';
     }
 }
