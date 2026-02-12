@@ -3,18 +3,14 @@
 namespace App\Filament\Resources\ClassRooms\Pages;
 
 use App\Filament\Resources\ClassRooms\ClassRoomResource;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListClassRooms extends ListRecords
 {
     protected static string $resource = ClassRoomResource::class;
 
-    protected function getHeaderActions(): array
+    public function getTitle(): string 
     {
-        return [
-            CreateAction::make()
-                ->label('教室を登録'),
-        ];
+        return '授業一覧';
     }
 }

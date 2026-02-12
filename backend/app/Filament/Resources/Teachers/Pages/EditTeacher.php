@@ -9,6 +9,17 @@ class EditTeacher extends EditRecord
 {
     protected static string $resource = TeacherResource::class;
 
+    public function getTitle(): string 
+    {
+        return '講師情報編集';
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        // 保存したら一覧画面に戻る
+        return $this->getResource()::getUrl('index');
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         return DB::transaction(function () use ($data) {

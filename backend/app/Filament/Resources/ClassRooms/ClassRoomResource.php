@@ -20,11 +20,12 @@ class ClassRoomResource extends Resource
 {
     protected static ?string $model = Classes::class;
 
-    protected static ?string $navigationLabel = '教室管理';
-    protected static ?string $modelLabel = '教室';
-    protected static ?string $pluralModelLabel = '教室';
+    protected static ?string $navigationLabel = '授業管理';
+    protected static ?string $modelLabel = '授業';
+    protected static ?string $pluralModelLabel = '授業';
+    protected static ?string $slug = 'classes';
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $recordTitleAttribute = 'PHP';
 
@@ -55,7 +56,6 @@ class ClassRoomResource extends Resource
         return [
             'index' => ListClassRooms::route('/'),
             'create' => CreateClassRoom::route('/create'),
-            'view' => ViewClassRoom::route('/{record}'),
             'edit' => EditClassRoom::route('/{record}/edit'),
         ];
     }
