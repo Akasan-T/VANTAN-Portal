@@ -1,0 +1,31 @@
+/* ヘッダーレイアウト */
+.header {
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    align-items: center;
+    padding: 8px 4px;
+    width: 100%;
+    height: 96px;
+}
+
+.title {
+    justify-self: center;
+    grid-column: 2;
+    font-size: 36px;
+    color: var(--white);
+    text-align: center;
+    line-height: 1.12;
+}
+
+.menu {
+    justify-self: end;
+    grid-column: 3;
+}
+
+/* ロールごとの色変更 */
+.student {
+    background: var(--red);
+}
+.teacher {
+    background: var(--black);
+}

@@ -27,11 +27,11 @@ return new class extends Migration
                   ->nullOnDelete();
                 
             $table->enum('status', [
-                'present', // 出席
-                'late',    // 遅刻
+                'present',     // 出席
+                'late',        // 遅刻
                 'early_leave', // 早退
-                'absent',  // 欠席
-                'excused'  // 公欠
+                'absent',      // 欠席
+                'excused'      // 公欠
             ]);
 
             $table->enum('attendance_method', [

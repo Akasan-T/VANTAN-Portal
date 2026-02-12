@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Seat extends Model
 {
     protected $fillable = [
-        'room_name',
+        'room_id',
         'seat_code',
     ];
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
 
     public function attendances()
     {

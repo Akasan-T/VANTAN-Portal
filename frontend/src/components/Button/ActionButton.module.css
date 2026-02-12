@@ -1,0 +1,47 @@
+/* アクションボタンレイアウト */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    max-width: 280px;
+    border-radius: 10px;
+    font-weight: 600;
+    line-height: 40px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* カラー */
+
+/* 生徒 */
+.student {
+    background: var(--red);
+    color: var(--white);
+}
+
+/* 教師 */
+.teacher {
+    background: var(--black);
+    color:  var(--white);
+}
+
+/* サイズ */
+/* .sm {
+
+}
+
+.md [
+
+] */
+
+.lg {
+    font-size: 20px;
+    padding: 8px 16px;
+    gap: 8px;
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
