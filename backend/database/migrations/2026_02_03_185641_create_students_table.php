@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id(); // 学生ID
             $table->foreignId('user_id') // usersと紐付け
-                  ->constrained()
-                  ->cascadeOnDelete();   // user_id削除自動時に削除
+                ->nullable()              // IDなくても登録できる
+                ->constrained()
+                ->cascadeOnDelete();  // user_id削除自動時に削除
+            $table->string('name'); //
+                    
             $table->string('student_number')->unique(); // 学籍番号
             $table->string('faculty');     // 学部
             $table->string('department');  // 学科名
