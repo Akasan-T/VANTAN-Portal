@@ -44,10 +44,13 @@ class EditTeacher extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
+        $user = $this->record->user;
         // 編集画面を開いた時に、Userテーブルの値をフォームにセットする
         $data['user']['name']  = $this->record->user->name;
         $data['user']['email'] = $this->record->user->email;
 
-        return $data;
+        return [
+            'specialty' =>$data['specialty'] ?? null,
+        ];
     }
 }
