@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\ClassRooms\Pages;
 
 use App\Filament\Resources\ClassRooms\ClassRoomResource;
-use Filament\Actions\CreateAction;
+use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListClassRooms extends ListRecords
@@ -13,8 +13,14 @@ class ListClassRooms extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make()
-                ->label('教室を登録'),
+            // これを追加すると「登録」ボタンが出現します
+            Actions\CreateAction::make()
+                ->label('授業を登録する'),
         ];
+    }
+
+    public function getTitle(): string 
+    {
+        return '授業管理';
     }
 }

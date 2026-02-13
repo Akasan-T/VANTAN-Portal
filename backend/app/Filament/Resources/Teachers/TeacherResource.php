@@ -17,9 +17,9 @@ class TeacherResource extends Resource
     protected static ?string $model = Teacher::class;
 
     protected static \BackedEnum|string|null $navigationIcon = Heroicon::AcademicCap;
-    protected static ?string $navigationLabel = '講師管理';
+    protected static ?string $navigationLabel = '講師一覧';
     protected static ?string $modelLabel = '講師';
-    protected static ?string $pluralModelLabel = '講師';
+    protected static ?string $pluralModelLabel = '講師一覧';
 
     /**
      * 入力フォームの定義
