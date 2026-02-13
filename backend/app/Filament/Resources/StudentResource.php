@@ -4,15 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Models\Student;
-use App\Models\User;
 use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
+use Filament\Schemas\Schema; // v4の型
+use Filament\Tables\Table;   // v4の型
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class StudentResource extends Resource
 {
@@ -28,42 +25,27 @@ class StudentResource extends Resource
         return 'heroicon-o-user-group';
     }
 
+    // 引数の型を Schema に統一
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                // 1. 名前を直接入力できるようにします
                 TextInput::make('name')
                     ->label('氏名')
                     ->required(),
-
-                // 2. ユーザーIDの入力欄を「隠しフィールド」にします
-                // 生徒を保存する際、自動でUserを作成してIDをセットします
-                // \Filament\Forms\Components\Hidden::make('user_id')
-                //     ->default(0), // 仮の値。保存直前に書き換えます
 
                 TextInput::make('student_number')
                     ->label('学籍番号')
                     ->required()
                     ->unique(ignoreRecord: true),
 
-                TextInput::make('faculty')
-                    ->label('学部')
-                    ->required(),
-
-                TextInput::make('department')
-                    ->label('学科')
-                    ->required(),
-
-                TextInput::make('major')
-                    ->label('専攻')
-                    ->required(),
+                TextInput::make('faculty')->label('学部')->required(),
+                TextInput::make('department')->label('学科')->required(),
+                TextInput::make('major')->label('専攻')->required(),
 
                 TextInput::make('grade')
                     ->label('学年')
                     ->numeric()
-                    ->minValue(1)
-                    ->maxValue(5)
                     ->required(),
 
                 TextInput::make('enrollment_year')
@@ -84,28 +66,15 @@ class StudentResource extends Resource
             ]);
     }
 
+    // 引数の型を Table に統一
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label('氏名')
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('student_number')
-                    ->label('学籍番号')
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('grade')
-                    ->label('学年')
-                    ->sortable(),
-
-                TextColumn::make('faculty')
-                    ->label('学部')
-                    ->searchable(),
-
+                TextColumn::make('name')->label('氏名')->sortable()->searchable(),
+                TextColumn::make('student_number')->label('学籍番号')->sortable()->searchable(),
+                TextColumn::make('grade')->label('学年')->sortable(),
+                TextColumn::make('faculty')->label('学部')->searchable(),
                 TextColumn::make('status')
                     ->label('状態')
                     ->badge()
@@ -115,13 +84,6 @@ class StudentResource extends Resource
                         'expelled' => 'danger',
                         'graduated' => 'gray',
                         default => 'gray',
-                    })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'enrolled' => '在学',
-                        'on_leave' => '休学',
-                        'expelled' => '除籍',
-                        'graduated' => '卒業',
-                        default => $state,
                     }),
             ])
             ->actions([
