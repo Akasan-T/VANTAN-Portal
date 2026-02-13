@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'name' => '橋爪 万太郎',
             'email' => 'admin@example.com',
             'password' => Hash::make('password1234'),
-            'role' => 'admin',
+            'role' => 'staff',
         ]);
     }
 }

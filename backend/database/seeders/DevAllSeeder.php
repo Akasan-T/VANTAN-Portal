@@ -55,8 +55,9 @@ class DevAllSeeder extends Seeder
 
         $student = Student::create([
             'user_id' => $studentUser->id,
+            'name' => "テスト学生1",
             'student_number' => 'S0001',
-            'faculty' => 'KADOKAWAドワンゴ情報工科学院',
+            'faculty' => '専門',
             'department' => '専門',
             'major' => 'システムエンジニア',
             'grade' => 2,
@@ -73,8 +74,9 @@ class DevAllSeeder extends Seeder
 
         $student = Student::create([
             'user_id' => $studentUser->id,
+            'name' => "テスト学生2",
             'student_number' => 'S0002',
-            'faculty' => 'KADOKAWAドワンゴ情報工科学院',
+            'faculty' => '専門',
             'department' => '専門',
             'major' => 'システムエンジニア',
             'grade' => 2,
