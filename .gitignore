@@ -30,6 +30,8 @@ Homestead.json
 auth.json
 mysql_data
 /backend/vendor
+/backend/node_modules
+/backend/.env
 /frontend/.vite
 backend/.env.docker.example
 backend/.env.example
