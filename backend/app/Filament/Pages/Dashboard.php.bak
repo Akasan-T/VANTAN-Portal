@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Filament\Pages;
+
+use App\Filament\Resources\StudentResource;
+use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Widgets\StatsOverviewWidget;
+use Filament\Widgets\Widget;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\DeleteAction;
+use App\Models\Student;
+
+class Dashboard extends BaseDashboard
+{
+    protected static ?string $navigationLabel = 'ダッシュボード';
+    protected static ?string $title = '管理者ダッシュボード';
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\StudentStatsWidget::class,
+        ];
+    }
+
+    protected function getTableWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\RecentStudentsWidget::class,
+        ];
+    }
+}

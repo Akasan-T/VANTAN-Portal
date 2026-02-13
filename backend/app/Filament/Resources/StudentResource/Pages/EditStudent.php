@@ -12,10 +12,20 @@ class EditStudent extends EditRecord
 {
     protected static string $resource = StudentResource::class;
 
+    public function getTitle(): string
+    {
+        return '生徒編集';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

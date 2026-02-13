@@ -8,5 +8,5 @@ class TodayDateTime extends Widget
 {
     protected string $view = 'filament.widgets.today-date-time';
 
-    protected static ?int $sort = 1;
+    protected static ?int $sort = 0;
 }
