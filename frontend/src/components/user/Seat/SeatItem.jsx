@@ -15,7 +15,6 @@ function SeatItem({ seat, submitting, onSelect }) {
     return (
         <div
             style={{
-                border: "1px solid #ccc",
                 padding: "10px",
                 textAlign: "center",
             }}
